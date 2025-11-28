@@ -9,7 +9,8 @@ source.include_exts = py,kv,mp3,png,jpg,ttf,wav
 
 # Requirements
 # Python 3.10 is REQUIRED for pyjnius + Kivy (fixes your build errors)
-requirements = python3==3.10.12, kivy
+requirements = python3==3.9.18,kivy,pyjnius==2.0.4
+
 
 # App settings
 orientation = portrait
