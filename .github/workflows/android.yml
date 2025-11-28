@@ -22,5 +22,9 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install buildozer cython
+    - name: Install Android SDK / NDK
+      run: |
+        sudo apt install -y adb
+        yes | sdkmanager --licenses || true
 
     
