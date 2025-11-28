@@ -17,6 +17,8 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y python3 python3-pip python3-setuptools git zip unzip openjdk-17-jdk
+        sudo apt-get update
+        sudo apt-get install -y libtool
 
     - name: Install Buildozer
       run: |
@@ -30,6 +32,7 @@ jobs:
 
     - name: Build APK
       run: |
+        buildozer android clean
         yes | buildozer android debug
 
     - name: Upload APK
