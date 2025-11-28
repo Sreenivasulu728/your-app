@@ -34,9 +34,6 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y libtool
         
-        # 2. Clean up previous, failed build artifacts
-        buildozer android clean
-        
         # 3. Start a fresh build using the updated requirements
         yes | buildozer android debug
 
