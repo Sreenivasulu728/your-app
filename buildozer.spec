@@ -4,7 +4,7 @@ package.name = gtmgame
 package.domain = org.example
 source.dir = .
 source.include_exts = py,kv,mp3,png,jpg,ttf,wav
-requirements = python3,kivy
+requirements = python3,kivy,six,pyjnius==1.4.2 
 orientation = portrait
 fullscreen = 1
 android.api = 30
