@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Install system dependencies
+    - name: Install System Dependencies
       run: |
         sudo apt update
         sudo apt install -y python3 python3-pip python3-setuptools git zip unzip openjdk-17-jdk
@@ -23,17 +23,39 @@ jobs:
         pip install --upgrade pip
         pip install buildozer cython
 
-    - name: Install Android SDK / NDK
+    - name: Download Android Command-line Tools
       run: |
-        sudo apt install -y adb
+        mkdir -p $HOME/android
+        cd $HOME/android
+        wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
+        unzip commandlinetools-linux-*.zip
+        mkdir -p cmdline-tools/latest
+        mv cmdline-tools/* cmdline-tools/latest/
+
+        echo "ANDROID_HOME=$HOME/android" >> $GITHUB_ENV
+        echo "PATH=$HOME/android/cmdline-tools/latest/bin:$PATH" >> $GITHUB_ENV
+
+    - name: Install Required Android Packages (API 30 ONLY)
+      run: |
+        export ANDROID_HOME=$HOME/android
+        export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
+
         yes | sdkmanager --licenses || true
+
+        sdkmanager --install \
+          "platform-tools" \
+          "platforms;android-30" \
+          "build-tools;30.0.3" \
+          "ndk;25.0.8775105"
 
     - name: Build APK
       run: |
+        export ANDROID_HOME=$HOME/android
+        export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
         buildozer android debug
 
-    - name: Upload APK
+    - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: GTMAPK
+        name: GTM-APK
         path: bin/*.apk
